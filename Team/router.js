@@ -1,12 +1,13 @@
 const { Router } = require("express");
 const Team = require("./model");
+const City = require("../City/model");
 const router = new Router();
 // rerouting
 router.get("/", (req, res) => res.redirect("/teams"));
 router.get("/team", (req, res) => res.redirect("/teams"));
 // read all teams
 router.get("/teams", (req, res, next) => {
-  Team.findAll()
+  Team.findAll({ include: [City] })
     .then(teams => {
       if (teams) {
         return res.json(teams);
@@ -24,7 +25,7 @@ router.post("/teams", (req, res, next) => {
 });
 // read team by ID
 router.get("/teams/:teamId", (req, res, next) => {
-  Team.findByPk(req.params.teamId)
+  Team.findByPk(req.params.teamId, { include: [City] })
     .then(team => {
       if (team) {
         return res.status(200).json(team);
@@ -36,7 +37,7 @@ router.get("/teams/:teamId", (req, res, next) => {
 });
 // update team by ID
 router.put("/teams/:teamId", (req, res, next) => {
-  Team.findByPk(req.params.teamId)
+  Team.findByPk(req.params.teamId, { include: [City] })
     .then(team => {
       if (team) {
         return team.update(req.body).then(team => res.status(200).json(team));
