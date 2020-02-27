@@ -2,7 +2,8 @@ const { Router } = require("express");
 const Player = require("./model");
 const Team = require("../Team/model");
 const router = new Router();
-
+// rerouting
+router.get("/player", (req, res) => res.redirect("/players"));
 // read all players
 router.get("/players", (req, res, next) => {
   Player.findAll()
