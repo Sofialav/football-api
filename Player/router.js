@@ -49,5 +49,15 @@ router.put("/players/:playerId", (req, res, next) => {
     })
     .catch(next);
 });
+// read players by team
+router.get("/teams/:teamId/players", (req, res, next) => {
+  Player.findAll({ where: { teamId: req.params.teamId } })
+    .then(players => {
+      if (players) {
+        return res.json(players);
+      } else res.status(404).send("No players exist");
+    })
+    .catch(next);
+});
 
 module.exports = router;
