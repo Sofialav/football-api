@@ -6,5 +6,9 @@ const db = new Sequelize(databaseUrl);
 
 db.sync()
   .then(() => console.log("Database schema updated"))
-  .catch(console.error);
+  .catch(err => {
+    console.error("Unable to create tables, shutting down...", err);
+    process.exit(1);
+  });
+
 module.exports = db;

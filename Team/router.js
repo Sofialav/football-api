@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const Team = require("./model");
 const router = new Router();
-
+// read all teams
 router.get("/teams", (req, res, next) => {
   Team.findAll()
     .then(teams => {
@@ -13,13 +13,13 @@ router.get("/teams", (req, res, next) => {
     })
     .catch(next);
 });
-
+// create a new team
 router.post("/teams", (req, res, next) => {
   Team.create(req.body)
     .then(team => res.status(201).json(team))
     .catch(next);
 });
-
+// read team by ID
 router.get("/teams/:teamId", (req, res, next) => {
   Team.findByPk(req.params.teamId)
     .then(team => {
@@ -31,4 +31,17 @@ router.get("/teams/:teamId", (req, res, next) => {
     })
     .catch(next);
 });
+// update team by ID
+router.put("/teams/:teamId", (req, res, next) => {
+  Team.findByPk(req.params.teamId)
+    .then(team => {
+      if (team) {
+        return team.update(req.body).then(team => res.status(200).json(team));
+      } else {
+        return res.status(404).send("does not exist");
+      }
+    })
+    .catch(next);
+});
+
 module.exports = router;
